@@ -18,6 +18,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_talisman import Talisman
 from sqlalchemy import MetaData
 from datetime import datetime
 
@@ -310,6 +311,53 @@ limiter = Limiter(
     default_limits=["500 per day"]  # 500 requests/day
 )
 
+csp = {
+    'default-src': ["'self'"],
+    'style-src': [
+        "'self'",
+        "https://trusted-styles.com",
+        "https://stackpath.bootstrapcdn.com",
+        'https://cdn.jsdelivr.net',
+    ],
+    'script-src': [
+        "'self'",
+        'https://cdn.jsdelivr.net',
+        "https://trusted-cdn.com",
+        "https://another-cdn.com",
+        'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/',
+        'https://cdnjs.cloudflare.com',
+        'https://www.google.com/recaptcha/',
+        'https://www.gstatic.com/recaptcha/',
+        "'unsafe-inline'",
+    ],
+    'img-src': [
+        "'self'",
+        "https://trusted-images.com",
+        "https://another-image-source.com",
+        'data:',
+    ],
+    'font-src': [
+        "'self'",
+        "https://trusted-fonts.com",
+    ],
+    'frame-src': [
+        "'self'",
+        'https://www.google.com/recaptcha/',
+        'https://recaptcha.google.com/recaptcha/',
+    ],
+    'connect-src': [
+        "'self'",
+        "https://trusted-api.com",
+        'https://www.google.com/recaptcha/',
+        'https://www.gstatic.com/recaptcha/',
+    ],
+    'media-src': ["'self'"],
+    'object-src': ["'none'"],
+    'child-src': ["'self'"],
+    'manifest-src': ["'self'"],
+}
+
+Talisman(app, content_security_policy=csp)
 # Roles decorator
 
 admin = Admin(app, name='DB Admin', template_mode='bootstrap4')

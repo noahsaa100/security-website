@@ -18,6 +18,7 @@ Flask-Bcrypt
 WTForms~=3.1.2
 cryptography
 email-validator
+Flask-Talisman
 
 python-dotenv
 SQLAlchemy~=2.0.35

@@ -177,13 +177,13 @@ def unlock_account():
 def mfa_setup():
     mfa_key = request.args.get('mfa_key')
 
-    # Generate QR code
+    # Generates QR code
     qr_uri = request.args.get('qr_uri')
 
-    # Generate QR code image
+    # Generates QR code image
     qr_code = pyqrcode.create(qr_uri)
     qr_code_path = os.path.join('static', 'mfa_qr.png')
-    qr_code.png(qr_code_path, scale=6)  # Save QR code as PNG in static folder
+    qr_code.png(qr_code_path, scale=6)  # Saves QR code as PNG in static folder
     if not mfa_key or not qr_uri:
         flash('No MFA key provided.', category='danger')
         return redirect(url_for('accounts.login', _external=True).replace("http://", "https://"))
