@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+    {% block content %}
+        <div class="container">
+            <div class="p-2 row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <div>
+                        <p>Please complete the following form to login to use the CSC2031 Blog.</p>
+                    </div>
+                    {% if form %}
+                    <form method="POST">
+                        <div class="p-2 bg-light border border-primary">
+                            <div style="text-align: left">
+                                {{ form.csrf_token() }}
+                                <div>
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} mt-3 alert-dismissible" role="alert">
+                                        {{ message }}.
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                onclick=delete_flash(this)>
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                    {% endfor %}
+                                    {% endwith %}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.email.label}}<span style="color: red">*</span>
+                                    {{ form.email(class="form-control") }}
+                                    {% for error in form.email.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.password.label}}<span style="color: red">*</span>
+                                    {{ form.password(class="form-control") }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.mfa_pin.label}}<span style="color: red">*</span>
+                                    {{ form.mfa_pin(class="form-control") }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.recaptcha() }}
+                                </div>
+                            </div>
+                            <div>
+                                {{ form.submit(class="btn btn-success") }}
+                            </div>
+                        </div>
+                    </form>
+                    {% else %}
+                        <div class="alert alert-danger">
+                            Your account is locked. <a href="{{ url_for('accounts.unlock_account') }}">Unlock it here</a>.
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+        </div>
+    {% endblock content %}

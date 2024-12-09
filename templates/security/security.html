@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>User Registration/Login Logs</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Registration Date</th>
+            <th>Latest Login</th>
+            <th>Previous Login</th>
+            <th>Latest IP</th>
+            <th>Previous IP</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log, user in logs %}
+        <tr>
+            <td>{{ log.user_id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ log.registration_date }}</td>
+            <td>{{ log.latest_login }}</td>
+            <td>{{ log.previous_login }}</td>
+            <td>{{ log.latest_ip }}</td>
+            <td>{{ log.previous_ip }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h1>User Event logs</h1>
+{% if event_logs %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Some</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event_log in event_logs %}
+        <tr>
+            <td> {{ event_log }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>No event logs available.</p>
+{% endif %}
+{% endblock %}

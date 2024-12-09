@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Set Up MFA</h1>
+<p>Use the following MFA key or QR code to configure your authenticator app:</p>
+<pre>{{ mfa_key }}</pre>
+<img src="{{ url_for('static', filename=qr_code_image) }}">
+<p>Steps:</p>
+<ol>
+    <li>Open your Microsoft Authenticator app.</li>
+    <li>Add a new account.</li>
+    <li>Choose "Scan QR Code" or "Enter key manually" and paste the key above.</li>
+    <li>Follow the instructions in the app to complete the setup.</li>
+</ol>
+<a href="{{ url_for('accounts.login') }}">Go to Login</a>
+{% endblock %}

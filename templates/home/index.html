@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+    {% block content %}
+    {% if current_user.is_authenticated %}
+            {% if current_user.role == Role.END_USER.value or current_user.role == Role.DB_ADMIN.value or current_user.role == Role.SEC_ADMIN.value %}
+                <h1>CSC2031 Blog</h1>
+                <p>Noah (220429313)</p>
+    {% endif %}
+    {%else %}
+        <h1>CSC2031 Blog</h1>
+        <p>Noah (220429313)</p>
+
+{% endif %}
+    {% endblock %}
