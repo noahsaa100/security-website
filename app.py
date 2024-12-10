@@ -23,22 +23,22 @@ def handle_rate_limit_error(e):
 
 @app.errorhandler(400)
 def bad_request_error(error):
-    return render_template('errors/400.html', error=error), 400
+    return render_template('errors/400.html', error=error, Role=Role), 400
 
 
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template('errors/404.html', error=error), 404
+    return render_template('errors/404.html', error=error, Role=Role), 404
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    return render_template('errors/500.html', error=error), 500
+    return render_template('errors/500.html', error=error, Role=Role), 500
 
 
 @app.errorhandler(501)
 def not_implemented_error(error):
-    return render_template('errors/501.html', error=error), 501
+    return render_template('errors/501.html', error=error, Role=Role), 501
 
 
 SQL_INJECTION_PATTERNS = ["union", "select", "insert", "drop", "alter", ";", "`", "'"]

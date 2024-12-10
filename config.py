@@ -265,10 +265,10 @@ class MainIndexLink(MenuLink):
 class SecureModelView(ModelView):
     def is_accessible(self):
         # Restrict access to authenticated users only
-        # if not current_user.is_authenticated:
-        #  return False
-        # if current_user.role not in ['db_admin', 'sec_admin']:
-        #    return False
+        if not current_user.is_authenticated:
+            return False
+        if current_user.role not in ['db_admin']:
+            return False
 
         return True
 
