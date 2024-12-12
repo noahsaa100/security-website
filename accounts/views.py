@@ -61,7 +61,7 @@ def registration():
     return render_template('accounts/registration.html', form=form)
 
 
-Max_Attempts = 10
+Max_Attempts = 3
 
 
 @accounts_bp.route('/login', methods=['GET', 'POST'])
@@ -76,7 +76,7 @@ def login():
 
     if session.get('attempts') >= Max_Attempts:
         flash('Your account is locked. Unlock to try again.', category='danger')
-        return render_template('accounts/login.html', form=form)  # Hide form when locked
+        return render_template('accounts/login.html', form=None)  # Hide form when locked
 
     if form.validate_on_submit():
         print("Form is valid")
@@ -145,6 +145,7 @@ def login():
 
             user_log.previous_ip = user_log.latest_ip or None
             user_log.latest_ip = request.remote_addr
+            db.session.commit()
 
         else:
             # No log exists for the user so one is generated
@@ -154,8 +155,9 @@ def login():
             user_log.latest_login = datetime.utcnow()
             user_log.previous_ip = user_log.latest_ip or None
             user_log.latest_ip = request.remote_addr
+            db.session.commit()
 
-        db.session.commit()
+
         print("Logged-in user's role:", current_user.role)
 
         flash('Login successful!', category='success')
