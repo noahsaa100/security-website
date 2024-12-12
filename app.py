@@ -74,6 +74,7 @@ def before_request():
     if response:
         return response
 
+
 @app.before_request
 def ensure_https():
     if not request.is_secure:

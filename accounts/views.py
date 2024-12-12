@@ -138,18 +138,24 @@ def login():
 
         # Check if there are existing logs for the user
         if user_logs:
-            user_log = user_logs[0]  # First log entry
+            user_log = user_logs[len(user_logs)-1]  # last log entry
             # Update log attributes
             user_log.previous_login = user_log.latest_login or None
             user_log.latest_login = datetime.utcnow()
 
             user_log.previous_ip = user_log.latest_ip or None
             user_log.latest_ip = request.remote_addr
-            db.session.commit()
+
         else:
             # No log exists for the user so one is generated
             user.generate_log()
-            db.session.commit()
+            user_log = user_logs[0]
+            user_log.previous_login = user_log.latest_login or None
+            user_log.latest_login = datetime.utcnow()
+            user_log.previous_ip = user_log.latest_ip or None
+            user_log.latest_ip = request.remote_addr
+
+        db.session.commit()
         print("Logged-in user's role:", current_user.role)
 
         flash('Login successful!', category='success')
@@ -163,7 +169,7 @@ def login():
             flash('Unknown role. Please contact an administrator.', category='warning')
             return redirect(url_for('accounts.login', _external=True).replace("http://", "https://"))
 
-    return render_template('accounts/login.html', form=form)
+    return render_template('accounts/login.html', form=form, Role=Role)
 
 
 @accounts_bp.route('/unlock', methods=['GET'])
@@ -188,7 +194,7 @@ def mfa_setup():
         flash('No MFA key provided.', category='danger')
         return redirect(url_for('accounts.login', _external=True).replace("http://", "https://"))
 
-    return render_template('accounts/mfa_setup.html', mfa_key=mfa_key, qr_uri=qr_uri, qr_code_image='mfa_qr.png')
+    return render_template('accounts/mfa_setup.html', mfa_key=mfa_key, qr_uri=qr_uri, qr_code_image='mfa_qr.png', Role=Role)
 
 
 @accounts_bp.route('/logout')

@@ -267,7 +267,7 @@ class SecureModelView(ModelView):
         # Restrict access to authenticated users only
         if not current_user.is_authenticated:
             return False
-        if current_user.role not in ['db_admin']:
+        if current_user.role not in ['db_admin', 'end_user']:
             return False
 
         return True
